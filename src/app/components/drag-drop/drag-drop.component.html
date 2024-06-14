@@ -1,0 +1,40 @@
+<div class="container">
+  <div
+    class="canvas"
+    #canvas
+    (dragover)="allowDrop($event)"
+    (drop)="drop($event)"
+  ></div>
+  <div class="tile-options">
+    <textarea
+      name="textBox"
+      class="textBox"
+      draggable="true"
+      (dragstart)="drag($event)"
+      id=""
+      placeholder="textBox"
+    ></textarea>
+    <div>
+      <img
+        class="image"
+        src="https://planner5d.com/blog/content/images/2022/07/tiny-house-ideas.jpg"
+        alt="Image"
+        draggable="true"
+        (dragstart)="drag($event)"
+      />
+    </div>
+    <div class="clock" draggable="true" (dragstart)="drag($event)">
+      <p class="clock-title">Clock</p>
+      <p class="clock-time">{{ this.time$ | async }}</p>
+    </div>
+
+    <div class="dropdown" draggable="true" (dragstart)="drag($event)">
+      <label for="options">Select option</label>
+      <select id="options">
+        <option *ngFor="let option of options" [value]="option">
+          {{ option }}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>

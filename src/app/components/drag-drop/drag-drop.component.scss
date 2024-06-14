@@ -1,0 +1,95 @@
+.container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+.canvas {
+  background-color: antiquewhite;
+  background-color: rgba(153, 153, 153, 0.2);
+}
+
+.tile-options {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+.tile {
+  width: 150px;
+  height: 50px;
+}
+.textBox {
+  resize: none;
+  width: 200px;
+  height: 130px;
+  padding: 0;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 4px;
+
+}
+.image {
+  width: 220px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.clock {
+  width: 220px;
+  height: 150px;
+  background-color: #0ca678;
+  color: white;
+  position: relative;
+  border-radius: 4px;
+
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &-title {
+    font-size: 16px;
+    margin-top: 2px;
+  }
+  &-time {
+    font-size: 36px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+::ng-deep .mat-mdc-text-field-wrapper{
+  width: 220px !important;
+}
+
+.textBox, .image, .clock, .dropdown {
+  cursor: grab;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  padding: 10px; 
+  background-color: #dee2e6;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.dropdown label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  cursor: grab;
+}
+
+.dropdown select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff; 
+}
