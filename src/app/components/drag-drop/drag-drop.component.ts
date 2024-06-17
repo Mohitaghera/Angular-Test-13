@@ -1,6 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, interval } from 'rxjs';
+import { BehaviorSubject, Subscription, interval } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 
 @Component({
@@ -10,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './drag-drop.component.html',
   styleUrl: './drag-drop.component.scss',
 })
-export class DragDropComponent implements OnInit {
+export class DragDropComponent implements OnInit, OnDestroy {
   date = new Date();
   timeSubject = new BehaviorSubject<string>(this.getDateTime());
   time$ = this.timeSubject.asObservable();
@@ -22,12 +28,14 @@ export class DragDropComponent implements OnInit {
   draggableRect: any;
   draggedElement: HTMLElement | null = null;
   isNewElement = false;
+  startClockSubscription!: Subscription;
+  initClockSubscription!: Subscription;
 
   ngOnInit(): void {
     this.startClock();
   }
   startClock() {
-    interval(1000).subscribe(() => {
+    this.startClockSubscription = interval(1000).subscribe(() => {
       const currentTime = this.getDateTime();
       this.timeSubject.next(currentTime);
     });
@@ -48,11 +56,11 @@ export class DragDropComponent implements OnInit {
     const canvasRect = this.canvas.nativeElement.getBoundingClientRect();
 
     if (
-      event.offsetX <=
+      event.clientX <=
         canvasRect.width - (this.draggableRect.width - this.offsetX) &&
       event.pageX >= this.offsetX &&
       event.pageY >= this.offsetY &&
-      canvasRect.height - event.offsetY >=
+      canvasRect.height - event.pageY >=
         this.draggableRect.height - this.offsetY
     ) {
       event.preventDefault();
@@ -114,9 +122,14 @@ export class DragDropComponent implements OnInit {
   initClock(element: HTMLElement) {
     const clockTimeElement = element.querySelector('.clock-time');
     if (clockTimeElement) {
-      this.time$.subscribe((time) => {
+      this.initClockSubscription = this.time$.subscribe((time) => {
         clockTimeElement.textContent = time;
       });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.startClockSubscription.unsubscribe();
+    this.initClockSubscription.unsubscribe();
   }
 }
